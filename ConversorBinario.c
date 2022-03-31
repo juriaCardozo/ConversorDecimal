@@ -8,15 +8,14 @@ typedef struct {
   int vetor[10];
 } PilhaEstatica;
 
-//-----------------------
-// OperaÁıes
-//-----------------------
+//----------------------//
+//      Opera√ß√µes       //
+//----------------------//
 
-// InicializaÁ„o da Pilha 
+// Inicializa√ß√£o da Pilha 
 void inicializarPilhaEstatica(PilhaEstatica *p) {
   p->topo = 0;
 }
-
 
 // Adiciona valor na Pilha
 void empilharPilhaEstatica(PilhaEstatica *pilha, int x) {
@@ -41,8 +40,8 @@ int topoPilhaEstatica(PilhaEstatica *pilha) {
 }
 
 // Imprime o que tem na pilha
-void imprimirPilhaEstatica(PilhaEstatica *p) {
-  printf("Pilha = [");
+void imprimirPilhaEstatica(PilhaEstatica *p, char nome[8]) {
+  printf("\nPilha %s = [", nome);
   int i;
   for(i = 0; i < p->topo; i++) {
     printf("%d ", p->vetor[i]);
@@ -50,20 +49,16 @@ void imprimirPilhaEstatica(PilhaEstatica *p) {
   printf("]\n");
 }
 
-// Converte um n˙mero do arquivo de entrada para bin·rios
+// Converte um n√∫mero do arquivo de entrada para bin√°rios
 int converteParaBinario(PilhaEstatica *pBin, int decimal){
 	int decimalGuarda = decimal;
-	printf("DECIMAL : %d\n", decimal);
-	printf("RESULTADO : %d\n",decimalGuarda);
 	int resultado[10], i;
 	int binario = 0;
 	if(decimal == 1){
 		empilharPilhaEstatica(pBin, 1);
-		printf("RESULTADO : %d\n", 1);
 	}
 	else if(decimal == 0){
 		empilharPilhaEstatica(pBin, 0);
-		printf("RESULTADO : %d\n", 0);
 	}else{
 		for(i=0; decimal>0; i++){
 			resultado[i] = decimal%2;
@@ -75,14 +70,13 @@ int converteParaBinario(PilhaEstatica *pBin, int decimal){
 		}
 		empilharPilhaEstatica(pBin, binario);	
 	}
-	
 }
 
 int main(int argc, const char * argv[]) {
   // Usando o argc 
   printf("Numero de parametros fornecidos: %d\n", argc);
   
-  //Verifica os par‚metros
+  //Verifica os par√¢metros
   if(argc!= 3) {
     printf("Quantidade de parametros invalida\n");
     return 0;
@@ -93,7 +87,7 @@ int main(int argc, const char * argv[]) {
 
   // Checa erros de abertura de arquivo
   if(entrada == NULL || saida == NULL) {
-     printf("Erro: algum dos arquivos n„o pode ser criado corretamente\n");
+     printf("Erro: algum dos arquivos n√£o pode ser criado corretamente\n");
      return 0;
   }
   
@@ -101,22 +95,22 @@ int main(int argc, const char * argv[]) {
   PilhaEstatica pilhaEntrada;
   inicializarPilhaEstatica(&pilhaEntrada);  	  
   
-  // Verifica se o arquivo est· vazio
+  // Verifica se o arquivo est√° vazio
   char teste;
   if((teste = fgetc(entrada)) == EOF){
-  	printf("Erro: Arquivo inv·lido\n");
- 	fprintf(saida, "Erro: Arquivo inv·lido");
+  	printf("Erro: Arquivo inv√°lido\n");
+ 	fprintf(saida, "Erro: Arquivo inv√°lido");
 	return 0;
   }
   
-  // Retorna para o inÌcio do arquivo
+  // Retorna para o in√≠cio do arquivo
   rewind(entrada);
   
-  // Verifica se os caracteres do arquivo de entrada s„o v·lidos
+  // Verifica se os caracteres do arquivo de entrada s√£o v√°lidos
   while((teste = fgetc(entrada)) != EOF) {
   	if(!(teste=='0' ||teste=='1' ||teste=='2' ||teste=='3' ||teste=='4' ||teste=='5' ||teste=='6' ||teste=='7' ||teste=='8' ||teste=='9' || teste=='\n')){
-  		printf("Erro: Arquivo inv·lido\n");
-     	fprintf(saida, "Erro: Arquivo inv·lido");
+  		printf("Erro: Arquivo inv√°lido\n");
+     	fprintf(saida, "Erro: Arquivo inv√°lido");
 		return 0;
 	}
   }
@@ -128,10 +122,11 @@ int main(int argc, const char * argv[]) {
     fscanf(entrada, "%d", &decimal);
     // Escreve esse inteiro no arquivo de saida
   	empilharPilhaEstatica(&pilhaEntrada, decimal);
-  	imprimirPilhaEstatica(&pilhaEntrada);
   }
+  char imprimeNome1[8] = "Entrada";
+  imprimirPilhaEstatica(&pilhaEntrada, imprimeNome1);
   
-  //Inicializa a pilha de Bin·rio
+  //Inicializa a pilha de Bin√°rio
   PilhaEstatica pilhaBinario;
   inicializarPilhaEstatica(&pilhaBinario);
   
@@ -139,11 +134,13 @@ int main(int argc, const char * argv[]) {
   int temp = pilhaEntrada.topo;
   int i;
   for(i=0; i<temp; i++){
-  	// Converte para bin·rio
+  	// Converte para bin√°rio
 	converteParaBinario(&pilhaBinario, desempilharPilhaEstatica(&pilhaEntrada));
-  	// Escreve o n˙mero convertido no arquivo
+  	// Escreve o n√∫mero convertido no arquivo
 	fprintf(saida, "%d\n", pilhaBinario.vetor[pilhaBinario.topo-1]);
   }
+  char imprimeNome2[8] = "Saida";
+  imprimirPilhaEstatica(&pilhaBinario, imprimeNome2);
   
   // Fecha os dois arquivos
   fclose(entrada);
